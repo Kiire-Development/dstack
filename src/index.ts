@@ -1,85 +1,43 @@
-import {exec} from "child_process"
-import chalk from "chalk"
 import readline from "readline"
-
-async function sleep(ms: number) {
+import { DisplayCreateMenu } from "./Menus/CreateMenu";
+import { DisplayLanguageMenu } from "./Menus/LanguageMenu";
+import {getName} from "./TextInputs/name"
+// eine Sleep Function
+export async function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+// Farben für das Terminal
+export const colorReset = '\x1b[0m';
+export const colorRed = '\x1b[31m';
+export const colorGreen = '\x1b[32m';
+export const colorYellow = '\x1b[33m';
+export const colorBlue = '\x1b[34m';
 
-const colorReset = '\x1b[0m';
-const colorRed = '\x1b[31m';
-const colorGreen = '\x1b[32m';
-const colorYellow = '\x1b[33m';
-const colorBlue = '\x1b[34m';
 
-
-console.log("DStack - a cli for your Discord-bot")
-
+export let name: string;
+export const setName = (newName: string) => {
+  name = newName
+}
 
 const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
+  input: process.stdin,
+  output: process.stdout
+});
+
+async function logs() {
+  console.log("DStack - a cli for your Discord-bot")
+  await getName()
+  console.clear()
+  await DisplayLanguageMenu()
+  console.clear()
+  await DisplayCreateMenu().then(() => {
+    console.log(colorGreen + "[log] all processes are completed!" + colorReset)
+    console.log(`\ncd ${name}\nnpm i\nnpm run dev\n\n\n${colorBlue}We wish you much fun with your bot!${colorReset}
+    `)
+    console.log(rl.getCursorPos())
+    process.exit(0)
+  })
+
   
-// Das Auswahlmenü definieren
-const menuOptions: any = {
-    1: 'create only index.ts',
-    2: 'create a index.ts with events',
-    3: "option 2 with a command handler",
-    4: 'option 3 with a api',
-    5: 'close'
-};
-  
-function displayMenu() {
-    console.log('Wähle eine Option:');
-    for (const key in menuOptions) {
-      console.log(`${key}. ${menuOptions[key]}`);
-    }
 }
-  
-async  function handleSelection(selection: any) {
-    const option = parseInt(selection);
-    switch (option) {
-      case 1:
-        exec("mkdir lol", (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Fehler beim Ausführen des Befehls: ${error.message}`);
-              return;
-            }
-            if (stderr) {
-              console.error(`Befehl fehlgeschlagen: ${stderr}`);
-              return;
-            }
-            console.log(`Befehl erfolgreich ausgeführt: ${stdout}`);
-        });
-        console.log(colorGreen + "[sucess] code generated!" + colorReset)
-        break;
-      case 2:
-        console.log('Du hast Option 2 ausgewählt.');
-        break;
-      case 3:
-        console.log('Du hast Option 3 ausgewählt.');
-        break;
-      case 4:
-        console.log('Du hast Option 4 ausgewählt.');
-        break;
-      case 5:
-        console.log('The programm will be closed.');
-        process.exit(1)
-      default:
-
-        // Farbigen Text ausgeben
-        console.log(colorRed + '[error] wrong input, please try again!' + colorReset);
-
-        break;
-    }
-    if (option !== 5) {
-        await sleep(1500)
-        displayMenu();
-        rl.question('> ', handleSelection);
-    }
-  }
-  
-  // Menü anzeigen und Auswahl behandeln
-  displayMenu();
-  rl.question('> ', handleSelection);
+logs()
