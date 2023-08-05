@@ -29,7 +29,8 @@ export const DisplayCreateMenu = async () => {
         switch (option) {
           case 1:
             exec(`mkdir ${name} `)
-            exec(`cp https://`)
+            exec(`cp `)
+            exec(`cd ${name} && npm i discord.js@latest typescript@latest ts-node nodemon && npx tsc --init`)
             
             resolve()
             break;

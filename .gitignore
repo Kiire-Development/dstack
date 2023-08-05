@@ -1,2 +1,3 @@
 node_modules
 package-lock.json
+# Enviroment Variablen werden nicht auf diese Liste gepakkt, da wir Verzeichnise kopieren und dann bei unseren Usern wieder einfügen, und dort auch die Env Dateien kopiert weren sollen.
