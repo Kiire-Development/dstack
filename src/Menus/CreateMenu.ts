@@ -1,12 +1,14 @@
 import {  createInterface } from "readline"
 import {exec} from "child_process"
-import { colorRed, colorReset, name, sleep } from "..";
+import { colorGreen, colorRed, colorReset, colorYellow, name, sleep } from "..";
+import os from "node:os"
+import { createIndex } from "../code/create/createIndex";
+import { createEventHandler } from "../code/create/createEventHandler";
 
 const rl = createInterface({
     input: process.stdin,
     output: process.stdout
 })
-
 
 export const DisplayCreateMenu = async () => {
     return new Promise<void>((resolve) => {
@@ -16,7 +18,7 @@ export const DisplayCreateMenu = async () => {
         3: 'create a standart event handler an command handler',
         4: 'create a standart project with a express api',
     };
-      
+    
     function displayCreateMenu() {
         console.log('choose:');
         for (const key in menuOptions) {
@@ -28,14 +30,16 @@ export const DisplayCreateMenu = async () => {
         const option = parseInt(selection);
         switch (option) {
           case 1:
-            exec(`mkdir ${name} `)
-            exec(`cp `)
-            exec(`cd ${name} && npm i discord.js@latest typescript@latest ts-node nodemon && npx tsc --init`)
+            createIndex()
             
             resolve()
             break;
           case 2:
-            console.log('Du hast Option 2 ausgewählt.');
+            createIndex()
+            createEventHandler()
+            console.clear()
+            console.log(colorYellow + "[info] learn more about dstack → https://dstack.kiire.xyz")
+            await sleep(1000)
             resolve()
             break;
           case 3:

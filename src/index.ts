@@ -19,6 +19,11 @@ export const setName = (newName: string) => {
   name = newName
 }
 
+export let language: string;
+export const setLanguage = (newLanguage: string) => {
+  language = newLanguage
+}
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout

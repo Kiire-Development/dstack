@@ -1,10 +1,9 @@
 import { createInterface } from "readline";
-import {colorGreen, colorRed, colorReset, sleep} from "../index"
+import {colorGreen, colorRed, colorReset, setLanguage, sleep} from "../index"
 const rl = createInterface({
     input: process.stdin,
     output: process.stdout
 })
-export let defaultLanguage: string;
 export const DisplayLanguageMenu =  () => {
     return new Promise<void>((resolve) => {
         const menu: any = {
@@ -21,12 +20,12 @@ export const DisplayLanguageMenu =  () => {
             const option = parseInt(selection);
             switch (option) {
               case 1:
-                defaultLanguage = "Javascript"
+                setLanguage("js")
                 console.log(colorGreen + '[log] you choose Javascript' + colorReset);
                 resolve()
                 break;
               case 2:
-                defaultLanguage = "Typescript"
+                setLanguage("ts")
                 console.log(colorGreen + '[log] you choose Typescript' + colorReset);
                 resolve()
                 break;
