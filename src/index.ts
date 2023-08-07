@@ -37,9 +37,7 @@ async function logs() {
   console.clear()
   await DisplayCreateMenu().then(() => {
     console.log(colorGreen + "[log] all processes are completed!" + colorReset)
-    console.log(`\ncd ${name}\nnpm i\nnpm run dev\n\n\n${colorBlue}We wish you much fun with your bot!${colorReset}
-    `)
-    console.log(rl.getCursorPos())
+    console.log(`\ncd ${name}\nnpm run dev\n\n\n${colorBlue}We wish you much fun with your bot!${colorReset}`)
     process.exit(0)
   })
 

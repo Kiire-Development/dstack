@@ -10,8 +10,9 @@ if (betriebsystem == "win32") {
 } else {
   createBefehl = "touch";
 }
-export const createIndex = () => {
-  exec(`mkdir ${name} `, (error, stdout, stderr) => {
+
+export const makeShellCall = (command: string) => {
+  exec(`${command}`, (error, stdout, stderr) => {
     if (error) {
       console.clear();
       console.log(
@@ -33,68 +34,38 @@ export const createIndex = () => {
       process.exit(1);
     }
   });
+};
 
-  const indexFile: string = `import { Client, GatewayIntentBits } from "discord.js";\n\n
-import dotenv from "dotenv"\n
-dotenv.config()\n
-const client = new Client({\n
-    intents: [GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildInvites, GatewayIntentBits.DirectMessages]\n
-})
-\n
-client.login(process.env.TOKEN || "")"import { Client, GatewayIntentBits } from "discord.js";\n\n
-import dotenv from "dotenv"\n
-dotenv.config()\n
-const client = new Client({\n
-    intents: [GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildInvites, GatewayIntentBits.DirectMessages]\n
-})
-\n
-client.login(process.env.TOKEN || "")`;
-  const packageJsonFile = `
-  {
-    "name": "${name}",
-    "version": "0.0.1",
-    "description": "",
-    "main": "src/index.${language}",
-    "scripts": {
-      "dev": "nodemon src/index.${language}"
+export const createIndex = () => {
+  makeShellCall(`mkdir ${name}`);
+
+
+  const packageJsonFile = {
+    name: `${name}`,
+    version: "0.0.1",
+    description: "",
+    main: `src/index.${language}`,
+    scripts: {
+      dev: `nodemon src/index.${language}`
     },
-    "keywords": [],
-    "author": "",
-    "license": "",
-    "dependencies": {
+    keywords: [],
+    author: "",
+    license: "",
+    dependencies: {
     },
-    "devDependencies": {
+    devDependencies: {
     }
   }
   
-  `
-  exec(
-    `cd ${name} && ${createBefehl} package.json && ${betriebsystem == "win32"? packageJsonFile: `"${packageJsonFile}"`} && mkdir src && cd src && ${createBefehl} index.${language} && echo ${
-      betriebsystem === "win32" ? `${indexFile}` : `"${indexFile}"`
-    } > index.ts && cd .. &&  ${createBefehl} .env &&  echo ${
-      betriebsystem === "win32" ? "TOKEN" : '"TOKEN="'
-    } > .env &&npx init`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.clear();
-        console.log(
-          colorRed +
-            "[error] we couldn't create a folder and install the required dependencies, the error: " +
-            error.message +
-            colorReset
-        );
-        process.exit(1);
-      }
-      if (stderr) {
-        console.clear();
-        console.log(
-            colorRed +
-            "[error] we couldn't create a folder and install the required dependencies, the error: " +
-            stderr +
-            colorReset
-        );
-        process.exit(1);
-      }
-    }
-  );
+  // create Package.json an write the right content in there
+  makeShellCall(`cd ${name} && ${createBefehl} package.json && echo "${JSON.stringify(packageJsonFile)}" > package.json`)
+
+  // create a .env file an write "TOKEN=" in there
+  makeShellCall(`cd ${name} && ${createBefehl} .env && echo ${
+    betriebsystem === "win32" ? `TOKEN=` : '"TOKEN="'
+  } > .env`)
+
+  // create the src directory and create the index file
+  makeShellCall(`cd ${name} && mkdir src && cd src && ${createBefehl} index.${language}  && echo "import {Client} from 'discord.js'\nimport dotenv from "dotnev"\nconst client${language == "ts"? ": string": ""} = new Client({\nintents:[]}) > index.ts`)
+
 };

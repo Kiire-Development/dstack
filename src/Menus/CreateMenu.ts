@@ -1,5 +1,4 @@
 import {  createInterface } from "readline"
-import {exec} from "child_process"
 import { colorGreen, colorRed, colorReset, colorYellow, name, sleep } from "..";
 import os from "node:os"
 import { createIndex } from "../code/create/createIndex";
@@ -31,7 +30,9 @@ export const DisplayCreateMenu = async () => {
         switch (option) {
           case 1:
             createIndex()
-            
+            console.clear()
+            console.log(colorYellow + "[info] learn more about dstack → https://dstack.kiire.xyz")
+            await sleep(1000)
             resolve()
             break;
           case 2:
@@ -43,11 +44,15 @@ export const DisplayCreateMenu = async () => {
             resolve()
             break;
           case 3:
-            console.log('Du hast Option 3 ausgewählt.');
+            console.clear()
+            console.log(colorYellow + "[info] learn more about dstack → https://dstack.kiire.xyz")
+            await sleep(1000)
             resolve()
             break;
           case 4:
-            console.log('Du hast Option 4 ausgewählt.');
+            console.clear()
+            console.log(colorYellow + "[info] learn more about dstack → https://dstack.kiire.xyz")
+            await sleep(1000)
             resolve()
             break;
           default:
